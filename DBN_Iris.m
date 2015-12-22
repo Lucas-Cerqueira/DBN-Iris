@@ -1,6 +1,11 @@
 %function test_example_DBN
-load mnist_uint8;
+
+clear all;
+
+%load mnist_uint8;
 load fisheriris;
+
+addpath (genpath('./functions/'));
 
 str_targets = species;
 % 2 - Normalization (target)
@@ -70,9 +75,9 @@ test_y = targets(itst,:)';
 %%  ex2 train a 100-100 hidden unit DBN and use its weights to initialize a NN
 rand('state',0)
 %train dbn
-dbn.sizes = [4 4];
+dbn.sizes = [75];
 opts.numepochs =   100;
-opts.batchsize =    5;
+opts.batchsize =    75;
 opts.momentum  =    0;
 opts.alpha     =    1;
 dbn = dbnsetup(dbn, train_x', opts);
@@ -89,3 +94,5 @@ nn = nntrain(nn, train_x', train_y', opts);
 [er, bad] = nntest(nn, test_x', test_y');
 
 assert(er < 0.10, 'Too big error');
+
+fprintf ('Acerto: %f\n', (1-er)*100);
